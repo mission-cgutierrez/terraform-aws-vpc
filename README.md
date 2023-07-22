@@ -1,108 +1,57 @@
-## VPC Module Example
+## Requirements
 
-This example demonstrates the usage of the VPC module to create a custom VPC with private and public subnets in AWS.
+No requirements.
 
-### Prerequisites
+## Providers
 
-- Terraform installed on your local machine.
-- AWS credentials configured.
+| Name | Version |
+|------|---------|
+| <a name="provider_aws"></a> [aws](#provider\_aws) | n/a |
 
-### Usage
+## Modules
 
-1. Clone this repository to your local machine.
+No modules.
 
-2. Navigate to the directory where your Terraform code is located.
+## Resources
 
-3. Create a new Terraform configuration file (e.g., `main.tf`) and copy the following code into it:
+| Name | Type |
+|------|------|
+| [aws_eip.nat_eip](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eip) | resource |
+| [aws_internet_gateway.gw](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/internet_gateway) | resource |
+| [aws_nat_gateway.nat_gw](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/nat_gateway) | resource |
+| [aws_route.private_route](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
+| [aws_route.public_route](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
+| [aws_route_table.private_route_table](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table) | resource |
+| [aws_route_table.public_route_table](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table) | resource |
+| [aws_route_table_association.private_association](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table_association) | resource |
+| [aws_route_table_association.public_association](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table_association) | resource |
+| [aws_subnet.private_subnet](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet) | resource |
+| [aws_subnet.public_subnet](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet) | resource |
+| [aws_vpc.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc) | resource |
+| [aws_vpc_endpoint.dynamodb_endpoint](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint) | resource |
+| [aws_vpc_endpoint.s3_endpoint](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint) | resource |
 
-```hcl
-module "vpc" {
-  source = "./terraform-aws-vpc"
+## Inputs
 
-  name             = "myvpc"
-  vpc_cidr_block   = "10.183.0.0/16"
-  region           = "us-west-2"
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_name"></a> [name](#input\_name) | The name of the VPC | `string` | n/a | yes |
+| <a name="input_private_subnets"></a> [private\_subnets](#input\_private\_subnets) | List of private subnet CIDR blocks and availability zones | <pre>list(object({<br>    cidr_block        = string<br>    availability_zone = string<br>  }))</pre> | n/a | yes |
+| <a name="input_public_subnets"></a> [public\_subnets](#input\_public\_subnets) | List of public subnet CIDR blocks and availability zones | <pre>list(object({<br>    cidr_block        = string<br>    availability_zone = string<br>  }))</pre> | n/a | yes |
+| <a name="input_region"></a> [region](#input\_region) | The AWS region | `string` | n/a | yes |
+| <a name="input_vpc_cidr_block"></a> [vpc\_cidr\_block](#input\_vpc\_cidr\_block) | The CIDR block for the VPC | `string` | n/a | yes |
 
-  private_subnets = [
-    {
-      cidr_block        = "10.183.0.0/20"
-      availability_zone = "us-west-2a"
-    },
-    {
-      cidr_block        = "10.183.16.0/20"
-      availability_zone = "us-west-2b"
-    },
-    {
-      cidr_block        = "10.183.32.0/20"
-      availability_zone = "us-west-2c"
-    }
-  ]
+## Outputs
 
-  public_subnets = [
-    {
-      cidr_block        = "10.183.128.0/20"
-      availability_zone = "us-west-2a"
-    },
-    {
-      cidr_block        = "10.183.144.0/20"
-      availability_zone = "us-west-2b"
-    },
-    {
-      cidr_block        = "10.183.160.0/20"
-      availability_zone = "us-west-2c"
-    }
-  ]
-}
-```
-
-4. Run the following commands in the directory containing your Terraform code:
-
-```shell
-terraform init
-terraform apply
-```
-
-5. Review the changes that will be applied and confirm by entering `yes`.
-
-6. Wait for Terraform to provision the VPC and its associated resources.
-
-7. After the deployment is complete, you can access the output values by running:
-
-```shell
-terraform output
-```
-
-### Inputs
-
-The following input variables can be configured for the VPC module:
-
-- `name`: The name of the VPC.
-- `vpc_cidr_block`: The CIDR block for the VPC.
-- `region`: The AWS region where the VPC will be created.
-- `private_subnets`: A list of objects representing the private subnet CIDR blocks and availability zones.
-- `public_subnets`: A list of objects representing the public subnet CIDR blocks and availability zones.
-
-### Outputs
-
-The VPC module provides the following outputs:
-
-- `vpc_id`: The ID of the created VPC.
-- `private_subnet_ids`: The IDs of the private subnets.
-- `public_subnet_ids`: The IDs of the public subnets.
-- `private_route_table_ids`: The IDs of the private route tables.
-- `public_route_table_ids`: The IDs of the public route tables.
-- `nat_gateway_ids`: The IDs of the NAT gateways.
-- `dynamodb_endpoint_id`: The ID of the DynamoDB VPC endpoint.
-- `s3_endpoint_id`: The ID of the S3 VPC endpoint.
-
-### Clean Up
-
-To clean up and destroy the created resources, run the following command:
-
-```shell
-terraform destroy
-```
-
-Confirm the destruction by entering `yes`.
-
-Remember to clean up any other resources that were created externally but are not managed by Terraform.
+| Name | Description |
+|------|-------------|
+| <a name="output_dynamodb_endpoint_id"></a> [dynamodb\_endpoint\_id](#output\_dynamodb\_endpoint\_id) | n/a |
+| <a name="output_elastic_ip_ids"></a> [elastic\_ip\_ids](#output\_elastic\_ip\_ids) | n/a |
+| <a name="output_internet_gateway_id"></a> [internet\_gateway\_id](#output\_internet\_gateway\_id) | n/a |
+| <a name="output_nat_gateway_ids"></a> [nat\_gateway\_ids](#output\_nat\_gateway\_ids) | n/a |
+| <a name="output_private_route_table_ids"></a> [private\_route\_table\_ids](#output\_private\_route\_table\_ids) | n/a |
+| <a name="output_private_subnet_ids"></a> [private\_subnet\_ids](#output\_private\_subnet\_ids) | n/a |
+| <a name="output_public_route_table_ids"></a> [public\_route\_table\_ids](#output\_public\_route\_table\_ids) | n/a |
+| <a name="output_public_subnet_ids"></a> [public\_subnet\_ids](#output\_public\_subnet\_ids) | n/a |
+| <a name="output_s3_endpoint_id"></a> [s3\_endpoint\_id](#output\_s3\_endpoint\_id) | n/a |
+| <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | n/a |
