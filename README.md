@@ -1,16 +1,8 @@
-## Requirements
-
-No requirements.
-
-## Providers
+## terraform-aws-vpc
 
 | Name | Version |
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | n/a |
-
-## Modules
-
-No modules.
 
 ## Resources
 
